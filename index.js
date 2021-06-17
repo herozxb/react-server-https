@@ -26,7 +26,7 @@ async function startApolloServer() {
   const config = configurations[environment];
 
   const server = new ApolloServer({ typeDefs, resolvers });
-  await server.start();
+  //await server.start();
 
   const app = express();
   server.applyMiddleware({ app });
