@@ -15,9 +15,9 @@ const GlobalMessageSchema = new Schema({
         type: String,
         default: Date.now,
     },
-
+    expire_at: {type: Date, default: Date.now() + 60 * 60 * 1000  }   // expires in 3 minutes}
+    //expire: { type: Date, index: { expireAfterSeconds: 300 } }
 });
-GlobalMessageSchema.index({ "expire_at": 1 }, { expireAfterSeconds: 3600 });
 module.exports = GlobalMessage = mongoose.model(
     'global_messages',
     GlobalMessageSchema

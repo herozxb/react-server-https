@@ -30,7 +30,8 @@ module.exports = {
 
     async getAreaPosts(_, thoughtArea) {
       try {
-        const posts = await Post.find(thoughtArea).sort({ createdAt: -1 });
+        console.log(thoughtArea)
+        const posts = await Post.find({thoughtArea:thoughtArea.thoughtArea}).limit(thoughtArea.limit).skip(thoughtArea.skip).sort({ createdAt: -1 });
         if (posts) {
           return posts;
         } else {
