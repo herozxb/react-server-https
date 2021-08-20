@@ -2,6 +2,9 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
+const { PubSub } = require('graphql-subscriptions');
+
+const pubsub = new PubSub();
 
 module.exports = {
   Query: {
@@ -74,7 +77,11 @@ module.exports = {
 
       const post = await newPost.save();
 
-      context.pubsub.publish('NEW_POST', {
+
+      //context.pubsub.publish('NEW_POST', {
+      //  newPost: post
+      //});
+      pubsub.publish('NEW_POST', {
         newPost: post
       });
 
@@ -99,9 +106,16 @@ module.exports = {
 
       const post = await newPost.save();
 
-      context.pubsub.publish('NEW_POST', {
+//      console.log("====2====");
+//      console.log(context);
+
+      pubsub.publish('NEW_POST', {
         newPost: post
       });
+
+//      context.pubsub.publish('NEW_POST', {
+//        newPost: post
+//      });
 
       return post;
     },

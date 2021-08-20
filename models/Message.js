@@ -25,5 +25,4 @@ const MessageSchema = new Schema({
     },
 
 });
-MessageSchema.index({ "expire_at": 1 }, { expireAfterSeconds: 3600 });
 module.exports = Message = mongoose.model('messages', MessageSchema);

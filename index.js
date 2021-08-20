@@ -12,7 +12,6 @@ const cors = require("cors");
 const users = require("./routes/api/users");
 const messages = require("./routes/api/messages");
 
-//const pubsub = new PubSub();
 
 const PORT = process.env.port || 5005;
 //////////////////////////////////////////////////////////
@@ -32,7 +31,7 @@ async function startApolloServer() {
   const environment = process.env.NODE_ENV || 'production';
   const config = configurations[environment];
 
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({ req, res }) });
   //await server.start();
 
   const app = express();
