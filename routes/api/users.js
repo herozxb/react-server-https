@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
     let jwtUser = jwt.verify(verify(req), keys.secretOrKey);
     let id = mongoose.Types.ObjectId(jwtUser.id);
 
-    User.aggregate()
+    User.aggregate([{ $skip : 3 },{ $limit: 2 }])
       .match({ _id: { $not: { $eq: id } } })
       .project({
         password: 0,
@@ -40,6 +40,43 @@ router.get("/", (req, res) => {
   }
 });
 
+
+router.post("/", (req, res) => {
+  try {
+    let jwtUser = jwt.verify(verify(req), keys.secretOrKey);
+    let id = mongoose.Types.ObjectId(jwtUser.id);
+
+    //console.log("==========body============")
+    //console.log(req.body)
+
+    User.aggregate([{ $skip : req.body.page * 2 },{ $limit: 2 }])
+      .match({ _id: { $not: { $eq: id } } })
+      .project({
+        password: 0,
+        __v: 0,
+        date: 0,
+      })
+      .exec((err, users) => {
+        if (err) {
+          console.log(err);
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ message: "Failure" }));
+          res.sendStatus(500);
+        } else {
+          res.send(users);
+        }
+      });
+  } catch (err) {
+    console.log(err);
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify({ message: "Unauthorized" }));
+    res.sendStatus(401);
+  }
+});
+
+
+
+
 router.post("/register", (req, res) => {
   // Form validation
   const { errors, isValid } = validateRegisterInput(req.body);
@@ -52,8 +89,8 @@ router.post("/register", (req, res) => {
       return res.status(400).json({ message: "Username already exists" });
     } else {
       const newUser = new User({
-        name: req.body.name,
         username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
       });
       // Hash password before saving in database
