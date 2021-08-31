@@ -1,5 +1,6 @@
 const { model, Schema } = require('mongoose');
 
+
 const postSchema = new Schema({
   body: String,
   username: String,
@@ -24,5 +25,7 @@ const postSchema = new Schema({
 });
 
 postSchema.add({ thoughtArea: String });
+postSchema.add({ honesty: String });
+postSchema.add({ ability: String });
 
 module.exports = model('Post', postSchema);
