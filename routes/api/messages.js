@@ -112,7 +112,7 @@ router.get('/conversations', (req, res) => {
 router.post('/conversations', (req, res) => {
     let from = mongoose.Types.ObjectId(jwtUser.id);
     Conversation.aggregate([
-        { $skip : req.body.page * 2 },{ $limit: 2 },
+        { $skip : req.body.page * 10 },{ $limit: 10 },
         {
             $lookup: {
                 from: 'users',
@@ -195,56 +195,59 @@ router.post('/', (req, res) => {
     let from = mongoose.Types.ObjectId(jwtUser.id);
     let to = mongoose.Types.ObjectId(req.body.to);
 
-    Conversation.findOneAndUpdate(
-        {
-            recipients: {
-                $all: [
-                    { $elemMatch: { $eq: from } },
-                    { $elemMatch: { $eq: to } },
-                ],
+    if(from != to)
+    {
+        Conversation.findOneAndUpdate(
+            {
+                recipients: {
+                    $all: [
+                        { $elemMatch: { $eq: from } },
+                        { $elemMatch: { $eq: to } },
+                    ],
+                },
             },
-        },
-        {
-            recipients: [jwtUser.id, req.body.to],
-            lastMessage: req.body.body,
-            date: Date.now(),
-        },
-        { upsert: true, new: true, setDefaultsOnInsert: true },
-        function(err, conversation) {
-            if (err) {
-                console.log(err);
-                res.setHeader('Content-Type', 'application/json');
-                res.end(JSON.stringify({ message: 'Failure' }));
-                res.sendStatus(500);
-            } else {
-                let message = new Message({
-                    conversation: conversation._id,
-                    to: req.body.to,
-                    from: jwtUser.id,
-                    body: req.body.body,
-                });
+            {
+                recipients: [jwtUser.id, req.body.to],
+                lastMessage: req.body.body,
+                date: Date.now(),
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true },
+            function(err, conversation) {
+                if (err) {
+                    console.log(err);
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({ message: 'Failure' }));
+                    res.sendStatus(500);
+                } else {
+                    let message = new Message({
+                        conversation: conversation._id,
+                        to: req.body.to,
+                        from: jwtUser.id,
+                        body: req.body.body,
+                    });
 
-                req.io.sockets.emit('messages', req.body.body);
+                    req.io.sockets.emit('messages', req.body.body);
 
-                message.save(err => {
-                    if (err) {
-                        console.log(err);
-                        res.setHeader('Content-Type', 'application/json');
-                        res.end(JSON.stringify({ message: 'Failure' }));
-                        res.sendStatus(500);
-                    } else {
-                        res.setHeader('Content-Type', 'application/json');
-                        res.end(
-                            JSON.stringify({
-                                message: 'Success',
-                                conversationId: conversation._id,
-                            })
-                        );
-                    }
-                });
+                    message.save(err => {
+                        if (err) {
+                            console.log(err);
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(JSON.stringify({ message: 'Failure' }));
+                            res.sendStatus(500);
+                        } else {
+                            res.setHeader('Content-Type', 'application/json');
+                            res.end(
+                                JSON.stringify({
+                                    message: 'Success',
+                                    conversationId: conversation._id,
+                                })
+                            );
+                        }
+                    });
+                }
             }
-        }
-    );
+        );
+    }
 });
 
 module.exports = router;

@@ -49,7 +49,7 @@ router.post("/", (req, res) => {
     //console.log("==========body============")
     //console.log(req.body)
 
-    User.aggregate([{ $skip : req.body.page * 2 },{ $limit: 2 }])
+    User.aggregate([{ $skip : req.body.page * 10 },{ $limit: 10 }])
       .match({ _id: { $not: { $eq: id } } })
       .project({
         password: 0,
