@@ -37,6 +37,7 @@ async function startApolloServer() {
   const app = express();
   server.applyMiddleware({ app });
 
+
 /////////////////////////////add_chat_with_mongodb//////W////////////////////////////
 
 
@@ -59,7 +60,7 @@ async function startApolloServer() {
   //secureServer.listen(3000);
 
   const port = process.env.PORT || 5002;
-  const io = require("socket.io")(secureServer,{ cors: { origin: '*' } });
+  const io = require("socket.io")(secureServer,);
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
   io.on('connection', (socket) => {
@@ -80,6 +81,7 @@ async function startApolloServer() {
   // CORS middleware
   app.use(cors());
 
+
   
   // Passport middleware
   app.use(passport.initialize());
@@ -88,6 +90,8 @@ async function startApolloServer() {
 
   // Assign socket object to every request
   app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "https://www.xhappysearch.com https://120.53.220.237");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     req.io = io;
     next();
   });
