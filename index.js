@@ -59,7 +59,7 @@ async function startApolloServer() {
   //secureServer.listen(3000);
 
   const port = process.env.PORT || 5002;
-  const io = require("socket.io")(secureServer);
+  const io = require("socket.io")(secureServer,{ cors: { origin: '*' } });
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
   io.on('connection', (socket) => {
