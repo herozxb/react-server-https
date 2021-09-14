@@ -226,7 +226,7 @@ router.post('/', (req, res) => {
                         body: req.body.body,
                     });
 
-                      io.on('connection', (socket) => {
+                    req.io.on('connection', (socket) => {
       console.log('a user connected in api/application');
       socket.on('disconnect', () => {
           console.log('user disconnected');
