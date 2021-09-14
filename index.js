@@ -90,7 +90,7 @@ async function startApolloServer() {
 
   // Assign socket object to every request
   app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://www.xhappysearch.com https://120.53.220.237");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     req.io = io;
     next();
