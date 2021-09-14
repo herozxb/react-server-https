@@ -62,6 +62,13 @@ async function startApolloServer() {
   const io = require("socket.io")(secureServer);
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
+  io.on('connection', (socket) => {
+      console.log('a user connected');
+      socket.on('disconnect', () => {
+          console.log('user disconnected');
+      });
+  });
+
   // Body Parser middleware to parse request bodies
   app.use(
     bodyParser.urlencoded({
