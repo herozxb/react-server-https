@@ -23,7 +23,7 @@ const MessageSchema = new Schema({
         type: String,
         default: Date.now,
     },
-    createdAt: { type: Date, expires: '1m', default: Date.now }
+    createdAt: { type: Date, expires: '1440m', default: Date.now }
     //expire_at: {type: Date, default: Date.now() + 24 * 60 * 60 * 1000  }   // expires in 3 minutes}
     //expire_at: {type: Date, default: Date.now() + 24 * 60 * 60 * 1000  }   // expires in 3 minutes}
     //expire_at: { type: Date, index: { expireAfterSeconds: 60 } }
