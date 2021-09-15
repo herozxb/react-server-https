@@ -80,7 +80,7 @@ async function startApolloServer() {
 
   // CORS middleware
   app.use(cors());
-
+  app.options('*', cors());
 
   
   // Passport middleware
