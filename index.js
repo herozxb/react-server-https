@@ -60,7 +60,13 @@ async function startApolloServer() {
   //secureServer.listen(3000);
 
   const port = process.env.PORT || 5002;
-  const io = require("socket.io")(secureServer,);
+  const io = require("socket.io")(secureServer,{
+            cors: {
+                origin: "*",
+                methods: [ "GET", "POST" ],
+                credentials:false
+        }
+  });
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
   io.on('connection', (socket) => {
@@ -80,7 +86,6 @@ async function startApolloServer() {
 
   // CORS middleware
   app.use(cors());
-  app.options('*', cors());
 
   
   // Passport middleware
@@ -90,8 +95,6 @@ async function startApolloServer() {
 
   // Assign socket object to every request
   app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     req.io = io;
     next();
   });
