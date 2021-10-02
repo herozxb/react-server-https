@@ -69,6 +69,22 @@ async function startApolloServer() {
   });
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
+  let users = [];
+
+  const addUser = (userId, socketId) => {
+    !users.some((user) => user.userId === userId) &&
+      users.push({ userId, socketId });
+  };
+
+  const removeUser = (socketId) => {
+    users = users.filter((user) => user.socketId !== socketId);
+  };
+
+  const getUser = (userId) => {
+    return users.find((user) => user.userId === userId);
+  };
+
+
   io.on('connection', (socket) => {
       console.log('a user connected');
       socket.on('disconnect', () => {
