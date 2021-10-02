@@ -53,7 +53,7 @@ async function startApolloServer() {
 
   //https
   //app = module.exports = express();
-  var httpsOptions = { key: fs.readFileSync('./selfsigned.key'), cert: fs.readFileSync('./selfsigned.crt') };        
+  var httpsOptions = { key: fs.readFileSync('./tencent.key'), cert: fs.readFileSync('./tencent.crt') };        
   var secureServer = require('https').createServer(httpsOptions, app);
   //io = module.exports = require('socket.io').listen(secureServer,{pingTimeout: 7000, pingInterval: 10000});
   //io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
@@ -148,8 +148,8 @@ async function startApolloServer() {
     // Make sure these files are secured.
     httpServer = https.createServer(
       {
-        key: fs.readFileSync('./selfsigned.key'),
-        cert: fs.readFileSync('./selfsigned.crt')
+        key: fs.readFileSync('./tencent.key'),
+        cert: fs.readFileSync('./tencent.crt')
       },
       app,
     );
