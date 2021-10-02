@@ -93,6 +93,8 @@ async function startApolloServer() {
     socket.on("addUser", (userId) => {
       addUser(userId, socket.id);
       io.emit("getUsers", users);
+      console.log("addUser");
+      console.log(users);
     });
 
     //send and get message
@@ -108,6 +110,8 @@ async function startApolloServer() {
     socket.on("disconnect", () => {
       console.log("a user disconnected!");
       removeUser(socket.id);
+      console.log("removeUser");
+      console.log(users);
       io.emit("getUsers", users);
     });
   });
