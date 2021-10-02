@@ -21,6 +21,22 @@ const fs =  require('fs');
 const https =  require('https');
 const http =  require('http');
 
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+  !users.some((user) => user.userId === userId) &&
+    users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+  return users.find((user) => user.userId === userId);
+};
+
 async function startApolloServer() {
   const configurations = {
     // Note: You may need sudo to run on port 443
@@ -69,20 +85,6 @@ async function startApolloServer() {
   });
   secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
 
-  let users = [];
-
-  const addUser = (userId, socketId) => {
-    !users.some((user) => user.userId === userId) &&
-      users.push({ userId, socketId });
-  };
-
-  const removeUser = (socketId) => {
-    users = users.filter((user) => user.socketId !== socketId);
-  };
-
-  const getUser = (userId) => {
-    return users.find((user) => user.userId === userId);
-  };
 
 
   io.on('connection', (socket) => {
