@@ -22,19 +22,19 @@ const https =  require('https');
 const http =  require('http');
 
 
-let users = [];
+let users_all = [];
 
 const addUser = (userId, socketId) => {
-  !users.some((user) => user.userId === userId) &&
-    users.push({ userId, socketId });
+  !users_all.some((user) => user.userId === userId) &&
+    users_all.push({ userId, socketId });
 };
 
 const removeUser = (socketId) => {
-  users = users.filter((user) => user.socketId !== socketId);
+  users_all = users_all.filter((user) => user.socketId !== socketId);
 };
 
 const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
+  return users_all.find((user) => user.userId === userId);
 };
 
 async function startApolloServer() {
