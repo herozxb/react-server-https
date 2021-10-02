@@ -87,11 +87,36 @@ async function startApolloServer() {
 
 
 
-  io.on('connection', (socket) => {
-      console.log('a user connected');
-      socket.on('disconnect', () => {
-          console.log('user disconnected');
+
+  io.on("connection", (socket) => {
+    //when ceonnect
+    console.log("a user connected.");
+
+    //take userId and socketId from user
+    socket.on("addUser", (userId) => {
+      addUser(userId, socket.id);
+      io.emit("getUsers", users_all);
+      console.log("addUser");
+      console.log(users_all);
+    });
+
+    //send and get message
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+      const user = getUser(receiverId);
+      io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text,
       });
+    });
+
+    //when disconnect
+    socket.on("disconnect", () => {
+      console.log("a user disconnected!");
+      removeUser(socket.id);
+      io.emit("getUsers", users_all);
+      console.log("disconnect");
+      console.log(users_all);
+    });
   });
 
   // Body Parser middleware to parse request bodies
