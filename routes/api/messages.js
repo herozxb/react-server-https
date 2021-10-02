@@ -226,7 +226,17 @@ router.post('/', (req, res) => {
                         body: req.body.body,
                     });
 
+                    req.io.on('connection', (socket) => {
+      console.log('a user connected in api/application');
+      socket.on('disconnect', () => {
+          console.log('user disconnected');
+      });
+  });
+
                     req.io.sockets.emit('messages', req.body.body);
+                    console.log("=====message=====");
+                    console.log(req.body.body)
+
 
                     message.save(err => {
                         if (err) {

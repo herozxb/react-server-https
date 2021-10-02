@@ -24,7 +24,7 @@ const http =  require('http');
 async function startApolloServer() {
   const configurations = {
     // Note: You may need sudo to run on port 443
-    production: { ssl: false, port: 5005, hostname: 'localhost' },
+    production: { ssl: true, port: 5005, hostname: 'localhost' },
     development: { ssl: false, port: 5005, hostname: 'localhost' },
   };
 
@@ -37,13 +37,44 @@ async function startApolloServer() {
   const app = express();
   server.applyMiddleware({ app });
 
-/////////////////////////////add_chat_with_mongodb//////W////////////////////////////
-  const port = process.env.PORT || 5002;
-  const socket_server = app.listen(5002, () =>
-  console.log(`Chat Server running on http://${config.hostname}:${port}`)
-);
-  const io = require("socket.io").listen(socket_server);
 
+/////////////////////////////add_chat_with_mongodb//////W////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+  //http
+  //const port = process.env.PORT || 5002;
+  //const socket_server = app.listen(5002, () =>
+  //console.log(`Chat Server running on http://${config.hostname}:${port}`)
+  //);
+  //const io = require("socket.io").listen(socket_server);
+
+  //https
+  //app = module.exports = express();
+  var httpsOptions = { key: fs.readFileSync('./selfsigned.key'), cert: fs.readFileSync('./selfsigned.crt') };        
+  var secureServer = require('https').createServer(httpsOptions, app);
+  //io = module.exports = require('socket.io').listen(secureServer,{pingTimeout: 7000, pingInterval: 10000});
+  //io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
+  //secureServer.listen(3000);
+
+  const port = process.env.PORT || 5002;
+  const io = require("socket.io")(secureServer,{
+            cors: {
+                origin: "*",
+                methods: [ "GET", "POST" ],
+                credentials:false
+        }
+  });
+  secureServer.listen(5002, () =>console.log(`Chat Server running on https://${config.hostname}:${port}`));
+
+  io.on('connection', (socket) => {
+      console.log('a user connected');
+      socket.on('disconnect', () => {
+          console.log('user disconnected');
+      });
+  });
 
 
   // The array of all connected user and user's socket id
