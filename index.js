@@ -108,10 +108,13 @@ async function startApolloServer() {
       console.log(receiverId);
       console.log(text);
 
-      io.to(user.socketId).emit("getMessage", {
-        senderId,
-        text,
-      });
+      if( typeof user.socketId != 'undefined' )
+      {
+        io.to(user.socketId).emit("getMessage", {
+          senderId,
+          text,
+        });
+      }
     });
 
     //when disconnect
