@@ -227,11 +227,11 @@ router.post('/', (req, res) => {
                     });
 
                     req.io.on('connection', (socket) => {
-      console.log('a user connected in api/application');
-      socket.on('disconnect', () => {
-          console.log('user disconnected');
-      });
-  });
+                          console.log('a user connected in api/application');
+                          socket.on('disconnect', () => {
+                              console.log('user disconnected');
+                          });
+                      });
 
                     req.io.sockets.emit('messages', req.body.body);
                     console.log("=====message=====");

@@ -108,7 +108,7 @@ async function startApolloServer() {
       console.log(receiverId);
       console.log(text);
 
-      if( typeof user.socketId != 'undefined' )
+      if( typeof user.socketId !== 'undefined' )
       {
         io.to(user.socketId).emit("getMessage", {
           senderId,
