@@ -277,9 +277,9 @@ router.post('/', (req, res) => {
                     });
                   });
 //*/
-                    //req.io.sockets.emit('messages', req.body.body);
-                    //console.log("=====message=====");
-                    //console.log(req.body.body)
+                    req.io.sockets.emit('messages', req.body.body);
+                    console.log("=====req.io.sockets.message=====");
+                    console.log(req.body.body)
 
 
                     message.save(err => {
