@@ -108,10 +108,11 @@ async function startApolloServer() {
       console.log(receiverId);
       console.log(text);
       console.log(user);
-      console.log(user.socketId);
+      
 
       if(  user.socketId !== null )
       {
+        console.log(user.socketId);
         io.to(user.socketId).emit("getMessage", {
           senderId,
           text,

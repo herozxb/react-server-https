@@ -226,16 +226,60 @@ router.post('/', (req, res) => {
                         body: req.body.body,
                     });
 
+                    /*
                     req.io.on('connection', (socket) => {
                           console.log('a user connected in api/application');
                           socket.on('disconnect', () => {
                               console.log('user disconnected');
                           });
                       });
+                    //*/
+/*
+                  req.io.on("connection", (socket) => {
+                    //when ceonnect
+                    console.log("a user connected.");
 
-                    req.io.sockets.emit('messages', req.body.body);
-                    console.log("=====message=====");
-                    console.log(req.body.body)
+                    //take userId and socketId from user
+                    socket.on("addUser", (userId) => {
+                      addUser(userId, socket.id);
+                      io.emit("getUsers", users_all);
+                      console.log("addUser");
+                      console.log(users_all);
+                    });
+
+                    //send and get message
+                    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+                      const user = getUser(receiverId);
+                      console.log("sendMessage");
+                      console.log(senderId);
+                      console.log(receiverId);
+                      console.log(text);
+                      console.log(user);
+                      
+
+                      if(  user.socketId !== null )
+                      {
+                        console.log(user.socketId);
+                        io.to(user.socketId).emit("getMessage", {
+                          senderId,
+                          text,
+                        });
+                      }
+                    });
+
+                    //when disconnect
+                    socket.on("disconnect", () => {
+                      console.log("a user disconnected!");
+                      removeUser(socket.id);
+                      io.emit("getUsers", users_all);
+                      console.log("disconnect");
+                      console.log(users_all);
+                    });
+                  });
+//*/
+                    //req.io.sockets.emit('messages', req.body.body);
+                    //console.log("=====message=====");
+                    //console.log(req.body.body)
 
 
                     message.save(err => {
