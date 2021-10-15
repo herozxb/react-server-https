@@ -25,8 +25,11 @@ const http =  require('http');
 let users_all = [];
 
 const addUser = (userId, socketId) => {
-  !users_all.some((user) => user.userId === userId) &&
-    users_all.push({ userId, socketId });
+  if (userId!==undefined) {
+    !users_all.some((user) => user.userId === userId) &&
+    users_all.push({ userId, socketId }
+  }
+
 };
 
 const removeUser = (socketId) => {
