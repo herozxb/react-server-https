@@ -97,6 +97,8 @@ async function startApolloServer() {
 
     //take userId and socketId from user
     socket.on("addUser", ({user_ID,user_name}) => {
+      console.log("addUser user_name");
+      console.log(user_name);
       addUser( user_ID, user_name, socket.id );
       io.emit("getUsers", users_all);
       console.log("addUser");
