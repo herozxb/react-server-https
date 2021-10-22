@@ -24,10 +24,10 @@ const http =  require('http');
 
 let users_all = [];
 
-const addUser = ( userId, username, socketId ) => {
+const addUser = ( user_ID, user_name, socketId ) => {
   if (userId!=='') {
-    !users_all.some((user) => user.userId === userId) &&
-    users_all.push( { userId, username, socketId } )
+    !users_all.some((user) => user.userId === user_ID) &&
+    users_all.push( { user_ID, user_name, socketId } )
   }
 
 };
@@ -96,8 +96,8 @@ async function startApolloServer() {
     console.log("a user connected.");
 
     //take userId and socketId from user
-    socket.on("addUser", ({userId,username}) => {
-      addUser( userId, username, socket.id );
+    socket.on("addUser", ({user_ID,user_name}) => {
+      addUser( user_ID, user_name, socket.id );
       io.emit("getUsers", users_all);
       console.log("addUser");
       console.log(users_all);
