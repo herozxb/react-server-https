@@ -37,7 +37,7 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-  return users_all.find((user) => user.userId === userId);
+  return users_all.find((user) => user.user_ID === userId);
 };
 
 async function startApolloServer() {
