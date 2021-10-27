@@ -36,6 +36,11 @@ const removeUser = (socketId) => {
   users_all = users_all.filter((user) => user.socketId !== socketId);
 };
 
+const remove_user_by_name_and_by_id = (user_ID,username) => {
+  users_all = users_all.filter((user) => user.user_ID !== user_ID && user.user_name !== username );
+};
+
+
 const getUser = (userId) => {
   return users_all.find((user) => user.user_ID === userId);
 };
@@ -102,6 +107,9 @@ async function startApolloServer() {
 
     //take userId and socketId from user
     socket.on("addUser", ({user_ID,user_name}) => {
+      if (user_ID ==="inheader") {
+          remove_user_by_name_and_by_id(user_ID,user_name);
+      }
       console.log("addUser user_name");
       console.log(user_name);
       addUser( user_ID, user_name, socket.id );
@@ -147,7 +155,7 @@ async function startApolloServer() {
               text,
             });
       }
-      
+
     });
 
     //when disconnect
