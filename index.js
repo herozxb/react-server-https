@@ -111,7 +111,7 @@ async function startApolloServer() {
     //take userId and socketId from user
     socket.on("addUser", ({user_ID,user_name}) => {
 
-      remove_user_by_name_and_by_id(user_ID,user_name);
+      //remove_user_by_name_and_by_id(user_ID,user_name);
       console.log("addUser user_name");
       console.log(user_name);
       addUser( user_ID, user_name, socket.id );
