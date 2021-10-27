@@ -126,13 +126,15 @@ async function startApolloServer() {
       console.log("get_user_by_name");
       console.log(user_by_name);
 
-      if(  user !== undefined  )
+      if(  user_by_name !== undefined  )
       {
-        console.log(user.socketId);
-        io.to(user.socketId).emit("getMessage", {
-          senderId,
-          text,
-        });
+        user_by_name.map(user=>{
+            console.log(user.socketId);
+            io.to(user.socketId).emit("getMessage", {
+              senderId,
+              text,
+            });
+        })
       }
     });
 
