@@ -40,7 +40,7 @@ const remove_user_by_name_and_by_id = (user_ID,username) => {
   console.log("a user remove_user_by_name_and_by_id.");
   console.log(user_ID);
   console.log(username);
-  users_all = users_all.filter((user) => user.user_ID !== user_ID && user.user_name !== username );
+  users_all = users_all.filter((user) =>  String(user.user_ID).valueOf() !== String("in_header").valueOf() && user.user_name !== username );
 };
 
 
