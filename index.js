@@ -132,6 +132,7 @@ async function startApolloServer() {
             console.log(user.socketId);
             io.to(user.socketId).emit("getMessage", {
               senderId,
+              senderName,
               text,
             });
         })
