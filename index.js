@@ -40,6 +40,10 @@ const getUser = (userId) => {
   return users_all.find((user) => user.user_ID === userId);
 };
 
+const get_user_by_name = (username) => {
+  return users_all.find((user) => user.user_name === username);
+};
+
 async function startApolloServer() {
   const configurations = {
     // Note: You may need sudo to run on port 443
@@ -116,7 +120,11 @@ async function startApolloServer() {
       console.log(receiverName);
       console.log(text);
       console.log(user);
+
       
+      const user_by_name = get_user_by_name(receiverName);
+      console.log("get_user_by_name");
+      console.log(user_by_name);
 
       if(  user !== undefined  )
       {
