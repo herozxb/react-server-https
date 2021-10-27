@@ -107,11 +107,13 @@ async function startApolloServer() {
     });
 
     //send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    socket.on("sendMessage", ({ senderId, senderName, receiverId, receiverName, text }) => {
       const user = getUser(receiverId);
       console.log("sendMessage");
       console.log(senderId);
+      console.log(senderName);
       console.log(receiverId);
+      console.log(receiverName);
       console.log(text);
       console.log(user);
       
