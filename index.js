@@ -137,6 +137,17 @@ async function startApolloServer() {
             });
         })
       }
+
+      if(  user !== undefined &&  user_by_name.length === 0 )
+      {
+            console.log(user.socketId);
+            io.to(user.socketId).emit("getMessage", {
+              senderId,
+              senderName,
+              text,
+            });
+      }
+      
     });
 
     //when disconnect
