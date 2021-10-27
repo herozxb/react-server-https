@@ -41,7 +41,7 @@ const getUser = (userId) => {
 };
 
 const get_user_by_name = (username) => {
-  return users_all.find((user) => user.user_name === username);
+  return users_all.filter((user) => user.user_name === username);
 };
 
 async function startApolloServer() {
