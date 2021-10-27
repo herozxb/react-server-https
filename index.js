@@ -94,9 +94,7 @@ async function startApolloServer() {
   io.on("connection", (socket) => {
     //when ceonnect
     console.log("a user connected.");
-
-    var address = socket.handshake.address;
-    console.log('New connection from ' + address.address + ':' + address.port);
+    console.log('New connection from ' + socket.conn.remoteAddress);
 
     //take userId and socketId from user
     socket.on("addUser", ({user_ID,user_name}) => {
