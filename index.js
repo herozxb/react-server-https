@@ -120,12 +120,15 @@ async function startApolloServer() {
         const user_by_name_in_header = user_by_name.filter((user) => String(user.user_ID).valueOf() === String("in_header").valueOf());
         console.log(user_by_name);
         console.log(user_by_name_in_header);
-        console.log(user_by_name_in_header[0].socketId);
-        console.log(socket.id);
-        if(user_by_name_in_header.socketId != socket.id)
+        if(user_by_name_in_header.length>0)
         {
-            removeUser(user_by_name_in_header.socketId);
-            addUser( user_ID, user_name, socket.id );
+          console.log(user_by_name_in_header[0].socketId);
+          console.log(socket.id);
+          if(user_by_name_in_header[0].socketId != socket.id)
+          {
+              removeUser(user_by_name_in_header[0].socketId);
+              addUser( user_ID, user_name, socket.id );
+          }
         }
       }
       //remove_user_by_name_and_by_id(user_ID,user_name);
