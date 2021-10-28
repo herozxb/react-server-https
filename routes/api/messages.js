@@ -224,7 +224,7 @@ router.post('/conversations/query', (req, res) => {
             ],
         }},
         { $sort : { createdAt : -1} },
-        { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
+        { $skip : req.body.page * 20  },{ $limit: 20 },
         { $sort : { createdAt : 1} },
     ]).project({
             'toObj.password': 0,
