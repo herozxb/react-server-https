@@ -196,9 +196,9 @@ router.post('/conversations/query', (req, res) => {
     let user1 = mongoose.Types.ObjectId(jwtUser.id);
     let user2 = mongoose.Types.ObjectId(req.query.userId);
 
-    console.log("========useGetConversationMessagesByPage========");
-    console.log(req.body.page)
-    console.log(req.query.userId)
+    //console.log("========useGetConversationMessagesByPage========");
+    //console.log(req.body.page)
+    //console.log(req.query.userId)
 
     Message.aggregate([
         { $skip : req.body.page * 10 },{ $limit: 20 },
@@ -240,8 +240,8 @@ router.post('/conversations/query', (req, res) => {
                 res.end(JSON.stringify({ message: 'Failure' }));
                 res.sendStatus(500);
             } else {
-                console.log("=========return messages===========");
-                console.log(messages);
+                //console.log("=========return messages===========");
+                //console.log(messages);
                 res.send(messages);
             }
         });
