@@ -201,7 +201,7 @@ router.post('/conversations/query', (req, res) => {
     console.log(req.query.userId)
 
     Message.aggregate([
-        { $skip :  0 },{ $limit: req.body.page * 20 },
+        { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
         {
             $lookup: {
                 from: 'users',
