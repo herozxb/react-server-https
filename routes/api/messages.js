@@ -203,7 +203,7 @@ router.post('/conversations/query', (req, res) => {
     Message.aggregate([
         { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
         //{ $sort : { createdAt : -1} },
-        { $natural : -1 },
+        {$sort: {$natural: 1}},
         {
             $lookup: {
                 from: 'users',
