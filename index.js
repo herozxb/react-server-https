@@ -29,7 +29,6 @@ const addUser = ( user_ID, user_name, socketId ) => {
     (!users_all.some((user) => user.user_ID === user_ID) || !users_all.some((user) => user.user_name === user_name)) &&
     users_all.push( { user_ID, user_name, socketId } )
   }
-
 };
 
 const removeUser = (socketId) => {
@@ -51,6 +50,7 @@ const getUser = (userId) => {
 const get_user_by_name = (username) => {
   return users_all.filter((user) => user.user_name === username);
 };
+
 
 async function startApolloServer() {
   const configurations = {
@@ -115,6 +115,14 @@ async function startApolloServer() {
       if(String(user_ID).valueOf() === String("in_header").valueOf())
       {
         console.log("in_header login");
+
+        const user_by_name = get_user_by_name(user_name);
+        const user_by_name_in_header = user_by_name.filter((user) => user.user_ID === "in_header");
+        if(user_by_name_in_header.socketId != socket.id)
+        {
+            removeUser(user_by_name_in_header.socketId);
+            addUser( user_ID, user_name, socket.id );
+        }
       }
       //remove_user_by_name_and_by_id(user_ID,user_name);
       console.log("addUser user_name");
