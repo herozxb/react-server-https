@@ -106,11 +106,16 @@ async function startApolloServer() {
   io.on("connection", (socket) => {
     //when ceonnect
     console.log("a user connected.");
-    console.log('New connection from ' + socket.conn.remoteAddress);
+    //console.log('New connection from ' + socket.conn.remoteAddress);
 
     //take userId and socketId from user
     socket.on("addUser", ({user_ID,user_name}) => {
 
+
+      if(String(user_ID).valueOf() === String("in_header").valueOf())
+      {
+        console.log("in_header login");
+      }
       //remove_user_by_name_and_by_id(user_ID,user_name);
       console.log("addUser user_name");
       console.log(user_name);
