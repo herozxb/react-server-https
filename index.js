@@ -118,6 +118,8 @@ async function startApolloServer() {
 
         const user_by_name = get_user_by_name(user_name);
         const user_by_name_in_header = user_by_name.filter((user) => user.user_ID === "in_header");
+        console.log(user_by_name_in_header.socketId);
+        console.log(socket.id);
         if(user_by_name_in_header.socketId != socket.id)
         {
             removeUser(user_by_name_in_header.socketId);
