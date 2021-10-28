@@ -201,9 +201,8 @@ router.post('/conversations/query', (req, res) => {
     console.log(req.query.userId)
 
     Message.aggregate([
+        { $sort : { createdAt : -1} },
         { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
-        //{ $sort : { createdAt : -1} },
-        {$sort: {$natural: 1}},
         {
             $lookup: {
                 from: 'users',
