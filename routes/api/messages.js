@@ -147,6 +147,7 @@ router.get('/conversations/query', (req, res) => {
     let user1 = mongoose.Types.ObjectId(jwtUser.id);
     let user2 = mongoose.Types.ObjectId(req.query.userId);
     Message.aggregate([
+        { $skip : req.body.page * 10 },{ $limit: 20 },
         {
             $lookup: {
                 from: 'users',
