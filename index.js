@@ -117,7 +117,7 @@ async function startApolloServer() {
         console.log("in_header login");
 
         const user_by_name = get_user_by_name(user_name);
-        const user_by_name_in_header = user_by_name.filter((user) => user.user_ID === "in_header");
+        const user_by_name_in_header = user_by_name.filter((user) => String(user.user_ID).valueOf() === String("in_header").valueOf());
         console.log(user_by_name_in_header.socketId);
         console.log(socket.id);
         if(user_by_name_in_header.socketId != socket.id)
