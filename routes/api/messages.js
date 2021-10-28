@@ -217,17 +217,16 @@ router.post('/conversations/query', (req, res) => {
                 as: 'fromObj',
             },
         },
-        { $sort : { createdAt : -1} },
-        { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
-        { $sort : { createdAt : 1} },
-    ])
-        .match({
+        {$match : {
             $or: [
                 { $and: [{ to: user1 }, { from: user2 }] },
                 { $and: [{ to: user2 }, { from: user1 }] },
             ],
-        })
-        .project({
+        }},
+        { $sort : { createdAt : -1} },
+        { $skip :  0 },{ $limit: req.body.page * 20 + 20 },
+        { $sort : { createdAt : 1} },
+    ]).project({
             'toObj.password': 0,
             'toObj.__v': 0,
             'toObj.date': 0,
