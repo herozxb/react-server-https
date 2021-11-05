@@ -155,6 +155,44 @@ module.exports = {
       return post;
     },
 
+    async createAreaHonestyPostionPost(_, { body, thoughtArea, honesty, ability, position, salary },  context) {
+      const user = checkAuth(context);
+
+      //console.log("======createAreaPost.runned======");
+
+      if (body.trim() === '') {
+        throw new Error('Post body must not be empty');
+      }
+
+      const newPost = new Post({
+        body,
+        user: user.id,
+        username: user.username,
+        createdAt: new Date().toISOString(),
+        thoughtArea : thoughtArea,
+        honesty : honesty,
+        ability : ability,
+        position: position,
+        salary : salary,
+      });
+
+      const post = await newPost.save();
+
+//      console.log("====2====");
+//      console.log(context);
+
+      pubsub.publish('NEW_POST', {
+        newPost: post
+      });
+
+//      context.pubsub.publish('NEW_POST', {
+//        newPost: post
+//      });
+
+      return post;
+    },
+
+
 
 
     async deletePost(_, { postId }, context) {

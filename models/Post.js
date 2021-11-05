@@ -27,5 +27,7 @@ const postSchema = new Schema({
 postSchema.add({ thoughtArea: String });
 postSchema.add({ honesty: String });
 postSchema.add({ ability: String });
+postSchema.add({ position: String });
+postSchema.add({ salary: String });
 
 module.exports = model('Post', postSchema);
