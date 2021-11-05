@@ -54,7 +54,7 @@ module.exports = gql`
     createPost(body: String!): Post!
     createAreaPost(body: String!,thoughtArea:String!): Post!
     createAreaHonestyPost(body: String!, thoughtArea: String!, honesty: String!, ability: String!): Post!
-    createAreaHonestyPostionPost(body: String!, thoughtArea: String!, honesty: String!, ability: String!, position: String!, salary: String!): Post!
+    createAreaHonestyPostionPost(body: String!, thoughtArea: String!, honesty: String!, ability: String!, position: String!, salary: String!, person: String!): Post!
     deletePost(postId: ID!): String!
     createComment(postId: String!, body: String!): Post!
     deleteComment(postId: ID!, commentId: ID!): Post!
