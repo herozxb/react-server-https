@@ -158,7 +158,10 @@ module.exports = {
     async createAreaHonestyPostionPost(_, { body, thoughtArea, honesty, ability, position, salary, person },  context) {
       const user = checkAuth(context);
 
-      //console.log("======createAreaPost.runned======");
+      console.log("======createAreaHonestyPostionPost.runned======");
+      console.log(position);
+      console.log(salary);
+      console.log(person);
 
       if (body.trim() === '') {
         throw new Error('Post body must not be empty');
