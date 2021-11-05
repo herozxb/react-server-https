@@ -155,7 +155,7 @@ module.exports = {
       return post;
     },
 
-    async createAreaHonestyPostionPost(_, { body, thoughtArea, honesty, ability, position, salary },  context) {
+    async createAreaHonestyPostionPost(_, { body, thoughtArea, honesty, ability, position, salary, person },  context) {
       const user = checkAuth(context);
 
       //console.log("======createAreaPost.runned======");
@@ -174,6 +174,7 @@ module.exports = {
         ability : ability,
         position: position,
         salary : salary,
+        person : person,
       });
 
       const post = await newPost.save();

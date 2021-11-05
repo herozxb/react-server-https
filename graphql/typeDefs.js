@@ -16,6 +16,7 @@ module.exports = gql`
     ability:String!
     position:String!
     salary:String!
+    person:String!
   }
   type Comment {
     id: ID!

@@ -29,5 +29,6 @@ postSchema.add({ honesty: String });
 postSchema.add({ ability: String });
 postSchema.add({ position: String });
 postSchema.add({ salary: String });
+postSchema.add({ person: String });
 
 module.exports = model('Post', postSchema);
