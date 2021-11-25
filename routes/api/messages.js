@@ -80,6 +80,10 @@ router.get('/conversations', (req, res) => {
     let from = mongoose.Types.ObjectId(jwtUser.id);
     Conversation.aggregate([
         {
+            $sort: {
+                  'date': -1
+            },
+            
             $lookup: {
                 from: 'users',
                 localField: 'recipients',
