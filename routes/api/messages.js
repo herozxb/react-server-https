@@ -116,6 +116,11 @@ router.get('/conversations', (req, res) => {
 router.post('/conversations', (req, res) => {
     let from = mongoose.Types.ObjectId(jwtUser.id);
     Conversation.aggregate([
+        {
+            $sort: {
+                  'date': -1
+            }
+        },
         { $skip : req.body.page * 10 },{ $limit: 10 },
         {
             $lookup: {
