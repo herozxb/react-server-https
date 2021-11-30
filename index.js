@@ -135,7 +135,7 @@ async function startApolloServer() {
       console.log("addUser user_name");
       console.log(user_name);
       addUser( user_ID, user_name, socket.id );
-      io.emit("getUsers", users_all);
+      //io.emit("getUsers", users_all);
       console.log("addUser");
       console.log(users_all);
     });
@@ -184,7 +184,7 @@ async function startApolloServer() {
     socket.on("disconnect", () => {
       console.log("a user disconnected!");
       removeUser(socket.id);
-      io.emit("getUsers", users_all);
+      //io.emit("getUsers", users_all);
       console.log("disconnect");
       console.log(users_all);
     });
