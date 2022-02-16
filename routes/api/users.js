@@ -170,7 +170,7 @@ router.post("/login", (req, res) => {
               token: "Bearer " + token,
               name: user.name,
               username: user.username,
-              userId: user._id,
+              id: user._id,
             });
           }
         );

@@ -20,7 +20,7 @@ module.exports = {
 
     async getUserPosts(_, username) {
       try {
-        const posts = await Post.find(username).sort({ createdAt: -1 });
+        const posts = await Post.find({username:username.username}).limit(username.limit).skip(username.skip).sort({ createdAt: -1 });
         if (posts) {
           return posts;
         } else {
