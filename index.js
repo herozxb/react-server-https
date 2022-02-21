@@ -150,6 +150,10 @@ async function startApolloServer() {
       console.log(receiverName);
       console.log(text);
       console.log(user);
+      console.log(user);
+      
+      
+      send_message = { _id:0, body:text, fromObj: [ { _id:senderId, username:senderName } ] }
 
       
       const user_by_name = get_user_by_name(receiverName);
@@ -158,6 +162,7 @@ async function startApolloServer() {
 
       if(  user_by_name !== undefined  )
       {
+      /*
         user_by_name.map(user=>{
             console.log(user.socketId);
             io.to(user.socketId).emit("getMessage", {
@@ -166,16 +171,28 @@ async function startApolloServer() {
               text,
             });
         })
+        //*/
+        
+        user_by_name.map(user=>{
+            console.log(user.socketId);
+            io.to(user.socketId).emit("getMessage",send_message);
+        })
+        
       }
 
       if(  user !== undefined &&  user_by_name.length === 0 )
       {
+      /*
             console.log(user.socketId);
             io.to(user.socketId).emit("getMessage", {
               senderId,
               senderName,
               text,
             });
+      //*/      
+      
+            console.log(user.socketId);
+            io.to(user.socketId).emit("getMessage", send_message);
       }
 
     });
