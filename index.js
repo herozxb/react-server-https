@@ -150,7 +150,6 @@ async function startApolloServer() {
       console.log(receiverName);
       console.log(text);
       console.log(user);
-      console.log(user);
       
       
       send_message = { _id:0, body:text, fromObj: [ { _id:senderId, username:senderName } ] }
