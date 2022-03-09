@@ -23,6 +23,7 @@ const http =  require('http');
 
 
 let users_all = [];
+const users_peer = {};
 
 const addUser = ( user_ID, user_name, socketId ) => {
   if (user_ID!==''&&user_name!=='') {
@@ -195,6 +196,25 @@ async function startApolloServer() {
       }
 
     });
+
+
+    if (!users_peer[socket.id]) {
+        users_peer[socket.id] = socket.id;
+    }
+    socket.emit("yourID", socket.id);
+    io.sockets.emit("allUsers_peer", users_peer);
+    socket.on('disconnect', () => {
+        delete users_peer[socket.id];
+    })
+
+    socket.on("callUser", (data) => {
+        io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+    })
+
+    socket.on("acceptCall", (data) => {
+        io.to(data.to).emit('callAccepted', data.signal);
+    })
+
 
     //when disconnect
     socket.on("disconnect", () => {
