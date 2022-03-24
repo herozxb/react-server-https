@@ -22,7 +22,7 @@ const http =  require('http');
 
 
 let users_all = [];
-const users_peer = {};
+
 
 const addUser = ( user_ID, user_name, socketId ) => {
   if (user_ID!==''&&user_name!=='') {
@@ -75,21 +75,10 @@ async function startApolloServer() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //
-  //http
-  //const port = process.env.PORT || 5002;
-  //const socket_server = app.listen(5002, () =>
-  //console.log(`Chat Server running on http://${config.hostname}:${port}`)
-  //);
-  //const io = require("socket.io").listen(socket_server);
+//https
 
-  //https
-  //app = module.exports = express();
   var httpsOptions = { key: fs.readFileSync('./tencent.key'), cert: fs.readFileSync('./tencent.crt') };        
   var secureServer = require('https').createServer(httpsOptions, app);
-  //io = module.exports = require('socket.io').listen(secureServer,{pingTimeout: 7000, pingInterval: 10000});
-  //io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
-  //secureServer.listen(3000);
-
   const port = process.env.PORT || 5002;
   const io = require("socket.io")(secureServer,{
             cors: {
@@ -104,45 +93,21 @@ async function startApolloServer() {
 
 
   io.on("connection", (socket) => {
-    //when ceonnect
-    console.log("a user connected.");
-    //console.log('New connection from ' + socket.conn.remoteAddress);
 
-    //take userId and socketId from user
+    console.log("a user connected.");
     socket.on("addUser", ({user_ID,user_name}) => {
 
-
-      if(String(user_ID).valueOf() === String("in_header").valueOf())
-      {
-        console.log("in_header login");
-
-        const user_by_name = get_user_by_name(user_name);
-        const user_by_name_in_header = user_by_name.filter((user) => String(user.user_ID).valueOf() === String("in_header").valueOf());
-        console.log(user_by_name);
-        console.log(user_by_name_in_header);
-        if(user_by_name_in_header.length>0)
-        {
-          console.log(user_by_name_in_header[0].socketId);
-          console.log(socket.id);
-          if(user_by_name_in_header[0].socketId != socket.id)
-          {
-              removeUser(user_by_name_in_header[0].socketId);
-              addUser( user_ID, user_name, socket.id );
-          }
-        }
-      }
-      //remove_user_by_name_and_by_id(user_ID,user_name);
       console.log("addUser user_name");
       console.log(user_name);
+
       addUser( user_ID, user_name, socket.id );
       io.to(socket.id).emit("yourID",socket.id);
+
       console.log("yourID",socket.id);
-      //io.emit("getUsers", users_all);
       console.log("addUser");
       console.log(users_all);
     });
 
-    //send and get message
     socket.on("sendMessage", ({ senderId, senderName, receiverId, receiverName, text }) => {
       const user = getUser(receiverId);
       console.log("sendMessage");
@@ -163,17 +128,6 @@ async function startApolloServer() {
 
       if(  user_by_name !== undefined  )
       {
-      /*
-        user_by_name.map(user=>{
-            console.log(user.socketId);
-            io.to(user.socketId).emit("getMessage", {
-              senderId,
-              senderName,
-              text,
-            });
-        })
-        //*/
-        
         user_by_name.map(user=>{
             console.log(user.socketId);
             io.to(user.socketId).emit("getMessage",send_message);
@@ -183,37 +137,19 @@ async function startApolloServer() {
 
       if(  user !== undefined &&  user_by_name.length === 0 )
       {
-      /*
-            console.log(user.socketId);
-            io.to(user.socketId).emit("getMessage", {
-              senderId,
-              senderName,
-              text,
-            });
-      //*/      
-      
-            console.log(user.socketId);
-            io.to(user.socketId).emit("getMessage", send_message);
+        console.log(user.socketId);
+        io.to(user.socketId).emit("getMessage", send_message);
       }
 
     });
 
 
-    if (!users_peer[socket.id]) {
-        users_peer[socket.id] = socket.id;
-         console.log(users_peer);
-    }
-    //socket.on("myID", (data)=> {
-    //  user_by_name = get_user_by_name(data.my_name);
-      
-    //  io.to(user_by_name.socketId).emit("yourID",user_by_name.socketId);
-    //  console.log("your ID",user_by_name);
-    //})
-//    socket.emit("yourID", socket.id);
-    io.sockets.emit("allUsers_peer", users_peer);
-//    socket.on('disconnect', () => {
-//        delete users_peer[socket.id];
-//    })
+    //if (!users_peer[socket.id]) {
+    //    users_peer[socket.id] = socket.id;
+    //     console.log(users_peer);
+    //}
+
+    io.sockets.emit("allUsers_peer", users_all);
 
     socket.on("callUser", (data) => {
         io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
@@ -227,13 +163,10 @@ async function startApolloServer() {
         console.log(data);
     })
 
-
-    //when disconnect
     socket.on("disconnect", () => {
       console.log("a user disconnected!");
-      delete users_peer[socket.id];
+      //delete users_peer[socket.id];
       removeUser(socket.id);
-      //io.emit("getUsers", users_all);
       console.log("disconnect");
       console.log(users_all);
     });
