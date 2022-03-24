@@ -1,4 +1,3 @@
-//const { ApolloServer, PubSub } = require('apollo-server');
 const mongoose = require('mongoose');
 
 const typeDefs = require('./graphql/typeDefs');
@@ -85,7 +84,7 @@ async function startApolloServer() {
 
   //https
   //app = module.exports = express();
-  var httpsOptions = { key: fs.readFileSync('./selfsigned.key'), cert: fs.readFileSync('./selfsigned.crt') };        
+  var httpsOptions = { key: fs.readFileSync('./tencent.key'), cert: fs.readFileSync('./tencent.crt') };        
   var secureServer = require('https').createServer(httpsOptions, app);
   //io = module.exports = require('socket.io').listen(secureServer,{pingTimeout: 7000, pingInterval: 10000});
   //io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
@@ -136,6 +135,8 @@ async function startApolloServer() {
       console.log("addUser user_name");
       console.log(user_name);
       addUser( user_ID, user_name, socket.id );
+      io.to(socket.id).emit("yourID",socket.id);
+      console.log("yourID",socket.id);
       //io.emit("getUsers", users_all);
       console.log("addUser");
       console.log(users_all);
@@ -200,25 +201,37 @@ async function startApolloServer() {
 
     if (!users_peer[socket.id]) {
         users_peer[socket.id] = socket.id;
+         console.log(users_peer);
     }
-    socket.emit("yourID", socket.id);
+    //socket.on("myID", (data)=> {
+    //  user_by_name = get_user_by_name(data.my_name);
+      
+    //  io.to(user_by_name.socketId).emit("yourID",user_by_name.socketId);
+    //  console.log("your ID",user_by_name);
+    //})
+//    socket.emit("yourID", socket.id);
     io.sockets.emit("allUsers_peer", users_peer);
-    socket.on('disconnect', () => {
-        delete users_peer[socket.id];
-    })
+//    socket.on('disconnect', () => {
+//        delete users_peer[socket.id];
+//    })
 
     socket.on("callUser", (data) => {
         io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+        console.log("hey");
+        console.log(data);
     })
 
     socket.on("acceptCall", (data) => {
         io.to(data.to).emit('callAccepted', data.signal);
+        console.log("data");
+        console.log(data);
     })
 
 
     //when disconnect
     socket.on("disconnect", () => {
       console.log("a user disconnected!");
+      delete users_peer[socket.id];
       removeUser(socket.id);
       //io.emit("getUsers", users_all);
       console.log("disconnect");
@@ -262,8 +275,8 @@ async function startApolloServer() {
     // Make sure these files are secured.
     httpServer = https.createServer(
       {
-        key: fs.readFileSync('./selfsigned.key'),
-        cert: fs.readFileSync('./selfsigned.crt')
+        key: fs.readFileSync('./tencent.key'),
+        cert: fs.readFileSync('./tencent.crt')
       },
       app,
     );
