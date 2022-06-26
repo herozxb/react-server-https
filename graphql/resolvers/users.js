@@ -81,6 +81,8 @@ module.exports = {
       var d = new Date();
       d.setMonth(d.getMonth() + 8);
 
+      console.log("=====vip====");
+      console.log(d.toISOString());
       const newUser = new User({
         email,
         username,
