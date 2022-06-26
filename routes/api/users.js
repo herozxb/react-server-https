@@ -88,12 +88,14 @@ router.post("/register", (req, res) => {
     if (user) {
       return res.status(400).json({ message: "Username already exists" });
     } else {
+      var d = new Date();
+      d.setMonth(d.getMonth() + 8);
       const newUser = new User({
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
         createdAt: new Date().toISOString(),
-        vip_expired_date: "Hello"
+        vip_expired_date: d.toISOString()
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
