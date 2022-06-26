@@ -77,7 +77,7 @@ async function startApolloServer() {
 //
 //https
 
-  var httpsOptions = { key: fs.readFileSync('./selfsigned.key'), cert: fs.readFileSync('./selfsigned.crt') };        
+  var httpsOptions = { key: fs.readFileSync('./tencent.key'), cert: fs.readFileSync('./tencent.crt') };        
   var secureServer = require('https').createServer(httpsOptions, app);
   const port = process.env.PORT || 5002;
   const io = require("socket.io")(secureServer,{
@@ -208,8 +208,8 @@ async function startApolloServer() {
     // Make sure these files are secured.
     httpServer = https.createServer(
       {
-        key: fs.readFileSync('./selfsigned.key'),
-        cert: fs.readFileSync('./selfsigned.crt')
+        key: fs.readFileSync('./tencent.key'),
+        cert: fs.readFileSync('./tencent.crt')
       },
       app,
     );
