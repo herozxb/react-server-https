@@ -86,7 +86,7 @@ module.exports = {
         username,
         password,
         createdAt: new Date().toISOString(),
-        vip_expired_date: d.toISOString()
+        vip_expired_date: "Hello"
       });
 
       const res = await newUser.save();
