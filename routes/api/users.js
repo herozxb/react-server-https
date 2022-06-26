@@ -92,6 +92,8 @@ router.post("/register", (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
+        createdAt: new Date().toISOString(),
+        vip_expired_date: "Hello"
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
