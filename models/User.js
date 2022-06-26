@@ -9,6 +9,8 @@ const userSchema = new Schema({
   createdAt: String
 });
 
+userSchema.add({ vip_expired_date: String });
+
 module.exports = User = mongoose.model('users', userSchema);
 
 /*

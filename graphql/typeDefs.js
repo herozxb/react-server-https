@@ -35,6 +35,7 @@ module.exports = gql`
     token: String!
     username: String!
     createdAt: String!
+    vip_expired_date : String!
   }
   input RegisterInput {
     username: String!

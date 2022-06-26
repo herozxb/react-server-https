@@ -78,12 +78,15 @@ module.exports = {
       }
       // hash password and create an auth token
       password = await bcrypt.hash(password, 12);
+      var d = new Date();
+      d.setMonth(d.getMonth() + 8);
 
       const newUser = new User({
         email,
         username,
         password,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        vip_expired_date: d
       });
 
       const res = await newUser.save();
