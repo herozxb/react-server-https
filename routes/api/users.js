@@ -278,36 +278,35 @@ router.post("/wechat_pay", (req, res) => {
   var d = new Date();
   d.setMonth(d.getMonth() + 1);
 
-  var user_global;
-
   User.findOne({ "username" : "vip" }).then((user) => {
     console.log("================user====================")
     console.log(user)
-    user_global = user;
+
+    var  vip_date = new Date(user.vip_expired_date)
+    vip_date.setMonth(vip_date.getMonth() + 10);
+
+    const update = {
+      "$set": {
+        "vip_expired_date" : vip_date.toISOString()
+      }
+    };
+
+    const options = { returnNewDocument: true };
+
+    User.findOneAndUpdate({ "username" : "vip" }, update, options).then(updatedDocument => {
+      if(updatedDocument) {
+        console.log(`Successfully updated document: ${updatedDocument}.`)
+      } else {
+        console.log("No document matches the provided query.")
+      }
+      return updatedDocument
+    })
+    .catch(err => console.error(`Failed to find and update document: ${err}`))
+
   })
 
 
 
-  var  vip_date = new Date(user_global.vip_expired_date)
-  vip_date.setMonth(vip_date.getMonth() + 10);
-
-  const update = {
-    "$set": {
-      "vip_expired_date" : vip_date.toISOString()
-    }
-  };
-
-  const options = { returnNewDocument: true };
-
-  User.findOneAndUpdate({ "username" : "vip" }, update, options).then(updatedDocument => {
-    if(updatedDocument) {
-      console.log(`Successfully updated document: ${updatedDocument}.`)
-    } else {
-      console.log("No document matches the provided query.")
-    }
-    return updatedDocument
-  })
-  .catch(err => console.error(`Failed to find and update document: ${err}`))
 
 
   res.send("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
