@@ -237,16 +237,7 @@ router.post("/wechat_qr", async (req, res) => {
 });
 
 router.post("/wechat_pay", async (req, res) => {
-  // Form validation
-  //const { errors, isValid } = validateLoginInput(req.body);
-  // Check validation
-  //if (!isValid) {
-  //  return res.status(400).json(errors);
-  //}
 
-  console.log("==============req.body=====================");
-  console.log(req.body);
-  console.log(req.body.summary);
   
   const key = "49966677xlanguageherozxb49966677"
 
@@ -254,7 +245,7 @@ router.post("/wechat_pay", async (req, res) => {
   let nonce = req.body.resource.nonce
   let associated_data = req.body.resource.associated_data
 
-  // 解密 ciphertext字符  AEAD_AES_256_GCM算法
+
   ciphertext = Buffer.from(ciphertext, 'base64');
   let authTag = ciphertext.slice(ciphertext.length - 16);
   let data = ciphertext.slice(0, ciphertext.length - 16);
@@ -265,43 +256,41 @@ router.post("/wechat_pay", async (req, res) => {
   decipher.final();
   let payData = JSON.parse(decoded); //解密后的数据
 
-  console.log(payData);
-
   const value = await client.get(payData.out_trade_no)
+  
+  const state_trade = payData.trade_state
 
-  console.log("=========value=========");
-  console.log(value);
+  if ( state_trade == "SUCCESS" ) 
+  {
 
-  var d = new Date();
-  d.setMonth(d.getMonth() + 1);
+    User.findOne({ "username" : value }).then((user) => {
 
-  User.findOne({ "username" : value }).then((user) => {
+      var  vip_date = new Date(user.vip_expired_date)
+      vip_date.setMonth(vip_date.getMonth() + 1);
 
-    var  vip_date = new Date(user.vip_expired_date)
-    vip_date.setMonth(vip_date.getMonth() + 1);
+      const update = {
+        "$set": {
+            "vip_expired_date" : vip_date.toISOString()
+        }
+      };
 
-    const update = {
-      "$set": {
-        "vip_expired_date" : vip_date.toISOString()
-      }
-    };
+      const options = { returnNewDocument: true };
 
-    const options = { returnNewDocument: true };
+      User.findOneAndUpdate({ "username" : value }, update, options).then(updatedDocument => {
+          if(updatedDocument) {
+          //console.log(`Successfully updated document: ${updatedDocument}.`)
+          } else {
+          //console.log("No document matches the provided query.")
+          }
+          return updatedDocument
+        }).catch(err => console.error(`Failed to find and update document: ${err}`))
 
-    User.findOneAndUpdate({ "username" : value }, update, options).then(updatedDocument => {
-    if(updatedDocument) {
-      console.log(`Successfully updated document: ${updatedDocument}.`)
-    } else {
-      console.log("No document matches the provided query.")
-    }
-    return updatedDocument
-  })
-  .catch(err => console.error(`Failed to find and update document: ${err}`))
+    })
+    
+    res.json("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
+  }
 
-  })
-
-  res.json("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
-
+  
 
 });
 
