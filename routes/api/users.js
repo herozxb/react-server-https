@@ -16,7 +16,12 @@ const crypto =  require('crypto');
 
 const redis = require('redis');
 const client = redis.createClient();  
-await client.connect()
+
+async client_connect(){
+  await client.connect()
+}
+
+client_connect();
 
 router.get("/", (req, res) => {
   try {
