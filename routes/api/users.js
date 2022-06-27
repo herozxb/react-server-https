@@ -278,20 +278,22 @@ router.post("/wechat_pay", (req, res) => {
   var d = new Date();
   d.setMonth(d.getMonth() + 1);
 
+  var user_global;
 
   User.findOne({ "username" : "vip" }).then((user) => {
     console.log("================user====================")
     console.log(user)
+    user_global = user;
   })
 
 
 
-  //var  vip_date = new Date(user.vip_expired_date)
-  //vip_date.setMonth(vip_date.getMonth() + 10);
+  var  vip_date = new Date(user_global.vip_expired_date)
+  vip_date.setMonth(vip_date.getMonth() + 10);
 
   const update = {
     "$set": {
-      "vip_expired_date" : "vip_date"
+      "vip_expired_date" : vip_date.toISOString()
     }
   };
 
