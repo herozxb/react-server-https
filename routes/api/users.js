@@ -222,7 +222,7 @@ async function wechat_pay_qr() {
 }
 
 
-router.post("/wechat_qr", (req, res) => {
+router.post("/wechat_qr", async (req, res) => {
 
   // Form validation
   const { errors, isValid } = validateLoginInput(req.body);
@@ -234,15 +234,31 @@ router.post("/wechat_qr", (req, res) => {
 
   const username = req.body.username;
 
-  console.log("==============username=====================");
-  console.log(username);
+  //console.log("==============username=====================");
+  //console.log(username);
 
-  qr_address = await wechat_pay_qr();
+  //qr_address = wechat_pay_qr();
   
-  console.log("==============qr_address=====================");
-  console.log(qr_address);
+  //console.log("==============qr_address=====================");
+  //console.log(qr_address);
 
-  res.send(qr_address);
+  //res.send(qr_address);
+
+  const nonce_str = Math.random().toString(36).substr(2, 15);// 随机字符串
+  const timestamp = parseInt(+new Date() / 1000 + '').toString(); // 时间戳 秒\\
+  
+  const out_trade_no = nonce_str +"_"+ timestamp;
+
+  const params = {
+      description: '中文编程VIP会员',
+      out_trade_no: out_trade_no,
+      notify_url: 'https://www.xtalentyou.com:5002/api/users/wechat_pay',
+      amount: {
+        total: 100,
+      },
+    };
+  const result = await pay.transactions_native(params);
+  res.json(result);
 
 });
 
