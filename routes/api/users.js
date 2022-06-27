@@ -251,7 +251,29 @@ router.post("/wechat_pay", (req, res) => {
   }
 
   console.log("==============req.body=====================");
-  console.log(req.body);
+  console.log(req.body.body);
+  console.log(req.body.body.summary);
+  
+  const key = "49966677xlanguageherozxb49966677"
+
+  let ciphertext = req.body.body.resource.ciphertext
+  let nonce = req.body.body.resource.nonce
+  let associated_data = req.body.body.resource.associated_data
+
+  // 解密 ciphertext字符  AEAD_AES_256_GCM算法
+  ciphertext = Buffer.from(ciphertext, 'base64');
+  let authTag = ciphertext.slice(ciphertext.length - 16);
+  let data = ciphertext.slice(0, ciphertext.length - 16);
+  let decipher = crypto.createDecipheriv('aes-256-gcm', key, nonce);
+  decipher.setAuthTag(authTag);
+  decipher.setAAD(Buffer.from(associated_data));
+  let decoded = decipher.update(data, null, 'utf8');
+  decipher.final();
+  let payData = JSON.parse(decoded); //解密后的数据
+
+  console.log(payData);
+
+
 });
 
 
