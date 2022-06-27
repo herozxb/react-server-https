@@ -252,13 +252,13 @@ router.post("/wechat_pay", (req, res) => {
 
   console.log("==============req.body=====================");
   console.log(req.body);
-  console.log(req.body.body.summary);
+  console.log(req.body.summary);
   
   const key = "49966677xlanguageherozxb49966677"
 
-  let ciphertext = req.body.body.resource.ciphertext
-  let nonce = req.body.body.resource.nonce
-  let associated_data = req.body.body.resource.associated_data
+  let ciphertext = req.body.resource.ciphertext
+  let nonce = req.body.resource.nonce
+  let associated_data = req.body.resource.associated_data
 
   // 解密 ciphertext字符  AEAD_AES_256_GCM算法
   ciphertext = Buffer.from(ciphertext, 'base64');
