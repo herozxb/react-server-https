@@ -17,7 +17,7 @@ const crypto =  require('crypto');
 const redis = require('redis');
 const client = redis.createClient();  
 
-async client_connect(){
+async function client_connect()={
   await client.connect()
 }
 
