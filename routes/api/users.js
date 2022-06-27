@@ -15,7 +15,8 @@ const fs = require('fs');
 const crypto =  require('crypto');
 
 const redis = require('redis');
-const client = redis.createClient();
+const client = redis.createClient();  
+await client.connect()
 
 router.get("/", (req, res) => {
   try {
@@ -220,7 +221,7 @@ router.post("/wechat_qr", async (req, res) => {
   console.log(req.body);
   console.log(req.body.username);
 
-  await client.connect()
+
   client.set( out_trade_no, req.body.username )
 
   const params = {
@@ -286,7 +287,7 @@ router.post("/wechat_pay", async (req, res) => {
         }).catch(err => console.error(`Failed to find and update document: ${err}`))
 
     })
-    
+
     res.json("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
   }
 
