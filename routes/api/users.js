@@ -295,7 +295,17 @@ router.post("/wechat_pay", (req, res) => {
     }
   };
 
-  User.findOneAndUpdate({ "username" : "vip" }, update);
+  const options = { returnNewDocument: true };
+
+  User.findOneAndUpdate({ "username" : "vip" }, update, options).then(updatedDocument => {
+    if(updatedDocument) {
+      console.log(`Successfully updated document: ${updatedDocument}.`)
+    } else {
+      console.log("No document matches the provided query.")
+    }
+    return updatedDocument
+  })
+  .catch(err => console.error(`Failed to find and update document: ${err}`))
 
 
   res.send("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
