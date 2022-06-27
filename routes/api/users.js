@@ -288,7 +288,7 @@ router.post("/wechat_pay", (req, res) => {
 
     const update = {
       "$set": {
-        "vip_expired_date" : vip_date.toISOString();
+        "vip_expired_date" : vip_date.toISOString()
       }
     };
 
