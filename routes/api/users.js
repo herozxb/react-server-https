@@ -298,11 +298,6 @@ router.post("/wechat_pay", (req, res) => {
 
 
     const query = { "username": "vip" };
-    const update = {
-      "$set": {
-        "vip_expired_date" : vip_date.toISOString()
-      }
-    };
     const options = { "upsert": false };
 
     User.updateOne(query, update, options)
