@@ -131,6 +131,7 @@ router.post("/register", (req, res) => {
                       name: user.name,
                       username: user.username,
                       id: user._id,
+                      vip_expired_date:user.vip_expired_date
                     });
                   }
                 }
@@ -181,6 +182,7 @@ router.post("/login", (req, res) => {
               name: user.name,
               username: user.username,
               id: user._id,
+              vip_expired_date: user.vip_expired_date
             });
           }
         );
@@ -272,6 +274,27 @@ router.post("/wechat_pay", (req, res) => {
   let payData = JSON.parse(decoded); //解密后的数据
 
   console.log(payData);
+
+  var d = new Date();
+  d.setMonth(d.getMonth() + 1);
+
+
+  User.findOne({ "username" : "vip" }).then((user) => {
+
+    console.log("================user====================")
+    console.log(user)
+    //const update = {
+    //  "$set": {
+    //    "vip_expired_date" : user.vip_expired_date
+    //  }
+    //};
+
+    //User.findOneAndUpdate({ "username" : "vip" }, );
+
+  })
+
+
+  res.send("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
 
 
 });
