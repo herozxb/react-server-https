@@ -231,7 +231,7 @@ router.post("/wechat_qr", async (req, res) => {
 
 });
 
-router.post("/wechat_pay", (req, res) => {
+router.post("/wechat_pay", async (req, res) => {
   // Form validation
   //const { errors, isValid } = validateLoginInput(req.body);
   // Check validation
