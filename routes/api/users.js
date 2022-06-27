@@ -14,6 +14,9 @@ const WxPay = require('wechatpay-node-v3');
 const fs = require('fs');
 const crypto =  require('crypto');
 
+const redis = require('redis');
+const client = redis.createClient();
+
 router.get("/", (req, res) => {
   try {
     let jwtUser = jwt.verify(verify(req), keys.secretOrKey);
@@ -203,33 +206,17 @@ const pay = new WxPay({
   privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
 });
 
-async function wechat_pay_qr() {
-
-  const nonce_str = Math.random().toString(36).substr(2, 15);// 随机字符串
-  const timestamp = parseInt(+new Date() / 1000 + '').toString(); // 时间戳 秒\\
-  
-  const out_trade_no = nonce_str +"_"+ timestamp;
-
-  const params = {
-      description: '中文编程VIP会员',
-      out_trade_no: out_trade_no,
-      notify_url: 'https://www.xtalentyou.com:5002/api/users/wechat_pay',
-      amount: {
-        total: 100,
-      },
-    };
-  const result = await pay.transactions_native(params);
-  console.log(result);
-  return result;
-}
-
 
 router.post("/wechat_qr", async (req, res) => {
 
+
+
   const nonce_str = Math.random().toString(36).substr(2, 15);// 随机字符串
   const timestamp = parseInt(+new Date() / 1000 + '').toString(); // 时间戳 秒\\
   
   const out_trade_no = nonce_str +"_"+ timestamp;
+
+  client.set( out_trade_no, req.username )
 
   const params = {
       description: '中文编程VIP会员',
@@ -274,6 +261,11 @@ router.post("/wechat_pay", (req, res) => {
   let payData = JSON.parse(decoded); //解密后的数据
 
   console.log(payData);
+
+  const value = await client.get(payData.out_trade_no)
+
+  console.log("=========value=========");
+  console.log(value);
 
   var d = new Date();
   d.setMonth(d.getMonth() + 1);
