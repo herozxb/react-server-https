@@ -285,6 +285,9 @@ router.post("/wechat_pay", (req, res) => {
     var  vip_date = new Date(user.vip_expired_date)
     vip_date.setMonth(vip_date.getMonth() + 10);
 
+    console.log("================vip_date====================")
+    console.log(vip_date);
+
     const update = {
       "$set": {
         "vip_expired_date" : vip_date.toISOString()
