@@ -218,10 +218,10 @@ router.post("/wechat_qr", async (req, res) => {
 
   console.log(out_trade_no);
   console.log(req.body);
-  console.log(req.username);
+  console.log(req.body.username);
 
   await client.connect()
-  client.set( out_trade_no, req.username )
+  client.set( out_trade_no, req.body.username )
 
   const params = {
       description: '中文编程VIP会员',
