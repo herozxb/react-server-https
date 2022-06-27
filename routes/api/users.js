@@ -12,7 +12,7 @@ const User = require("../../models/User");
 
 const WxPay = require('wechatpay-node-v3');
 const fs = require('fs');
-const request = require('superagent');
+const crypto =  require('crypto');
 
 router.get("/", (req, res) => {
   try {
