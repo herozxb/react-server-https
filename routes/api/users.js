@@ -10,6 +10,10 @@ const validateRegisterInput = require("../../validation/register");
 const validateLoginInput = require("../../validation/login");
 const User = require("../../models/User");
 
+const WxPay = require('wechatpay-node-v3');
+const fs = require('fs');
+const request = require('superagent');
+
 router.get("/", (req, res) => {
   try {
     let jwtUser = jwt.verify(verify(req), keys.secretOrKey);
@@ -188,5 +192,71 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+
+const pay = new WxPay({
+  appid: 'wx5af78029e81ba904',
+  mchid: '1572014821',
+  publicKey: fs.readFileSync('./apiclient_cert.pem'), // 公钥
+  privateKey: fs.readFileSync('./apiclient_key.pem'), // 秘钥
+});
+
+async function wechat_pay_qr() {
+
+  const nonce_str = Math.random().toString(36).substr(2, 15);// 随机字符串
+  const timestamp = parseInt(+new Date() / 1000 + '').toString(); // 时间戳 秒\\
+  
+  const out_trade_no = nonce_str +"_"+ timestamp;
+
+  const params = {
+      description: '中文编程VIP会员',
+      out_trade_no: out_trade_no,
+      notify_url: 'https://www.xtalentyou.com:5002/api/users/wechat_pay',
+      amount: {
+        total: 100,
+      },
+    };
+  const result = await pay.transactions_native(params);
+  console.log(result);
+  return result;
+}
+
+
+router.post("/wechat_qr", (req, res) => {
+
+  // Form validation
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const username = req.body.username;
+
+  console.log("==============username=====================");
+  console.log(username);
+
+  qr_address = await wechat_pay_qr();
+  
+  console.log("==============qr_address=====================");
+  console.log(qr_address);
+
+  res.send(qr_address);
+
+});
+
+router.post("/wechat_pay", (req, res) => {
+  // Form validation
+  const { errors, isValid } = validateLoginInput(req.body);
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  console.log("==============req.body=====================");
+  console.log(req.body);
+});
+
 
 module.exports = router;
