@@ -216,6 +216,10 @@ router.post("/wechat_qr", async (req, res) => {
   
   const out_trade_no = nonce_str +"_"+ timestamp;
 
+  console.log(out_trade_no);
+  console.log(req.body);
+  console.log(req.username);
+
   await client.connect()
   client.set( out_trade_no, req.username )
 
