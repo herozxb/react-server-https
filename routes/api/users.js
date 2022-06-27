@@ -251,7 +251,7 @@ router.post("/wechat_pay", (req, res) => {
   //}
 
   console.log("==============req.body=====================");
-  console.log(req.body.body);
+  console.log(req.body);
   console.log(req.body.body.summary);
   
   const key = "49966677xlanguageherozxb49966677"
