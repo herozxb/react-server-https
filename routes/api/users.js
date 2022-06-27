@@ -279,17 +279,9 @@ router.post("/wechat_pay", (req, res) => {
   d.setMonth(d.getMonth() + 1);
 
   User.findOne({ "username" : "vip" }).then((user) => {
-    console.log("================user====================")
-    console.log(user)
 
     var  vip_date = new Date(user.vip_expired_date)
-    console.log("================vip_date====================")
-    console.log(vip_date);
-
-    vip_date.setMonth(vip_date.getMonth() + 10);
-    console.log(vip_date);
-
-
+    vip_date.setMonth(vip_date.getMonth() + 1);
 
     const update = {
       "$set": {
@@ -299,23 +291,11 @@ router.post("/wechat_pay", (req, res) => {
 
     const options = { returnNewDocument: true };
 
-    User.findOneAndUpdate({ "username" : "vip" }, update, options).then(updatedDocument => {
-      if(updatedDocument) {
-        console.log(`Successfully updated document: ${updatedDocument}.`)
-      } else {
-        console.log("No document matches the provided query.")
-      }
-      return updatedDocument
-    })
-    .catch(err => console.error(`Failed to find and update document: ${err}`))
+    User.findOneAndUpdate({ "username" : "vip" }, update, options)
 
   })
 
-
-
-
-
-  res.send("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
+  res.json("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
 
 
 });
