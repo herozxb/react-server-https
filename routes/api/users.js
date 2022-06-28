@@ -102,7 +102,7 @@ router.post("/register", (req, res) => {
       return res.status(400).json({ message: "Username already exists" });
     } else {
       var d = new Date();
-      d.setMonth(d.getMonth() - 1);
+      d.setMonth(d.getMonth() + 1);
       const newUser = new User({
         username: req.body.username,
         email: req.body.email,
