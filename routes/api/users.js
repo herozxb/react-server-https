@@ -301,4 +301,29 @@ router.post("/wechat_pay", async (req, res) => {
 });
 
 
+router.post("/user_vip", (req, res) => {
+
+  const username = req.body.username;
+
+  // Find user by username
+  User.findOne({ username }).then((user) => {
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ usernamenotfound: "Username not found" });
+    }
+
+    res.json({
+      success: true,
+      token: "Bearer " + token,
+      name: user.name,
+      username: user.username,
+      id: user._id,
+      vip_expired_date: user.vip_expired_date
+    });
+  });
+});
+
+
+
 module.exports = router;
