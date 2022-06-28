@@ -37,7 +37,7 @@ router.get("/", (req, res) => {
       })
       .exec((err, users) => {
         if (err) {
-          console.log(err);
+          //console.log(err);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ message: "Failure" }));
           res.sendStatus(500);
@@ -46,7 +46,7 @@ router.get("/", (req, res) => {
         }
       });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ message: "Unauthorized" }));
     res.sendStatus(401);
@@ -71,7 +71,7 @@ router.post("/", (req, res) => {
       })
       .exec((err, users) => {
         if (err) {
-          console.log(err);
+          //console.log(err);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ message: "Failure" }));
           res.sendStatus(500);
@@ -80,7 +80,7 @@ router.post("/", (req, res) => {
         }
       });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ message: "Unauthorized" }));
     res.sendStatus(401);
@@ -131,7 +131,7 @@ router.post("/register", (req, res) => {
                 },
                 (err, token) => {
                   if (err) {
-                    console.log(err);
+                    //console.log(err);
                   } else {
                     req.io.sockets.emit("users", user.username);
                     res.json({
@@ -146,7 +146,7 @@ router.post("/register", (req, res) => {
                 }
               );
             })
-            .catch((err) => console.log(err));
+            .catch(/*(err) => console.log(err)//*/);
         });
       });
     }
@@ -222,9 +222,9 @@ router.post("/wechat_qr", async (req, res) => {
   
   const out_trade_no = nonce_str +"_"+ timestamp;
 
-  console.log(out_trade_no);
-  console.log(req.body);
-  console.log(req.body.username);
+  //console.log(out_trade_no);
+  //console.log(req.body);
+  //console.log(req.body.username);
 
 
   client.set( out_trade_no, req.body.username )
@@ -298,7 +298,7 @@ router.post("/wechat_pay", async (req, res) => {
           //console.log("No document matches the provided query.")
           }
           return updatedDocument
-        }).catch(err => console.error(`Failed to find and update document: ${err}`))
+        }).catch(/*err => console.error(`Failed to find and update document: ${err}`)//*/)
 
     })
 
@@ -313,9 +313,6 @@ router.post("/wechat_pay", async (req, res) => {
 router.post("/user_vip", (req, res) => {
 
   const username = req.body.username;
-
-  console.log("==========username===========")
-  console.log(username);
 
   // Find user by username
   User.findOne({ "username" : username }).then((user) => {
