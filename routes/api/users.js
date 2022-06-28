@@ -319,8 +319,6 @@ router.post("/user_vip", (req, res) => {
 
     res.json({
       success: true,
-      token: "Bearer " + token,
-      name: user.name,
       username: user.username,
       id: user._id,
       vip_expired_date: user.vip_expired_date
