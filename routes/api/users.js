@@ -276,11 +276,13 @@ router.post("/wechat_pay", async (req, res) => {
       var vip_date;
       if( today > vip_expired )
       {
-        vip_date = today.setMonth(today.getMonth() + 1).toISOString();
+        today.setMonth(today.getMonth() + 1)
+        vip_date = today.toISOString();
       }
       else
       {
-        vip_date = vip_expired.setMonth(vip_expired.getMonth() + 1).toISOString();
+        vip_expired.setMonth(vip_expired.getMonth() + 1)
+        vip_date = vip_expired.toISOString();
       }
 
       const update = {
