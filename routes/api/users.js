@@ -305,8 +305,12 @@ router.post("/user_vip", (req, res) => {
 
   const username = req.body.username;
 
+  console.log("==========username===========")
+  console.log(username);
+
   // Find user by username
-  User.findOne({ username }).then((user) => {
+  User.findOne({ "username" : username }).then((user) => {
+
 
     // Check if user exists
     if (!user) {
